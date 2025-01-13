@@ -1,10 +1,58 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Instagram, Facebook, Phone, Mail, Clock, MapPin } from 'lucide-react';
 
-// Moved translations to a separate object for better organization
-const translations = {
+// TypeScript interfaces
+interface Translation {
+  hero: {
+    title: string;
+    subtitle: string;
+    cta: string;
+  };
+  services: {
+    title: string;
+    items: Array<{
+      icon: string;
+      title: string;
+      description: string;
+    }>;
+  };
+  team: {
+    title: string;
+    members: Array<{
+      name: string;
+      role: string;
+      description: string;
+    }>;
+  };
+  gallery: {
+    productsTitle: string;
+    spaceTitle: string;
+  };
+  footer: {
+    contact: string;
+    address: string;
+    addressText: string;
+    hours: string;
+    schedule: string;
+    time: string;
+    social: string;
+  };
+}
+
+interface Translations {
+  [key: string]: Translation;
+}
+
+interface LanguageSelectorProps {
+  currentLang: string;
+  onLanguageChange: (lang: string) => void;
+}
+
+// Translations object
+const translations: Translations = {
   pt: {
     hero: {
       title: "Carol Lopes Salão",
@@ -267,7 +315,7 @@ const translations = {
   }
 };
 
-const LanguageSelector = ({ currentLang, onLanguageChange }) => {
+const LanguageSelector: React.FC<LanguageSelectorProps> = ({ currentLang, onLanguageChange }) => {
   const languages = [
     { code: 'pt', name: 'Português' },
     { code: 'en', name: 'English' },
@@ -293,12 +341,16 @@ const LanguageSelector = ({ currentLang, onLanguageChange }) => {
   );
 };
 
-const HeroCarousel = ({ t }) => {
+interface HeroCarouselProps {
+  t: Translation['hero'];
+}
+
+const HeroCarousel: React.FC<HeroCarouselProps> = ({ t }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
-    { type: 'video', src: '/vid/take2.mp4' },
-    { type: 'video', src: '/vid/take3.mp4' },
-    { type: 'video', src: '/vid/take4.mp4' },
+    { type: 'video' as const, src: '/vid/take2.mp4' },
+    { type: 'video' as const, src: '/vid/take3.mp4' },
+    { type: 'video' as const, src: '/vid/take4.mp4' },
   ];
 
   useEffect(() => {
@@ -306,23 +358,16 @@ const HeroCarousel = ({ t }) => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
 
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {slides.map((slide, index) => (
         <div
           key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${currentSlide === index ? 'opacity-100' : 'opacity-0'
-            }`}
+          className={`absolute inset-0 transition-opacity duration-1000 ${currentSlide === index ? 'opacity-100' : 'opacity-0'}`}
         >
-          {slide.type === 'image' ? (
-            <img
-              src={slide.src}
-              alt="Hero"
-              className="object-cover w-full h-full"
-            />
-          ) : (
+          {slide.type === 'video' && (
             <video
               src={slide.src}
               autoPlay
@@ -355,7 +400,11 @@ const HeroCarousel = ({ t }) => {
   );
 };
 
-const ServicesSection = ({ t }) => {
+interface ServicesSectionProps {
+  t: Translation['services'];
+}
+
+const ServicesSection: React.FC<ServicesSectionProps> = ({ t }) => {
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
@@ -378,8 +427,11 @@ const ServicesSection = ({ t }) => {
     </section>
   );
 };
+interface TeamCarouselProps {
+  t: Translation['team'];
+}
 
-const TeamCarousel = ({ t }) => {
+const TeamCarousel: React.FC<TeamCarouselProps> = ({ t }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const team = t.members;
 
@@ -429,8 +481,11 @@ const TeamCarousel = ({ t }) => {
     </section>
   );
 };
+interface GalleryProps {
+  t: Translation['gallery'];
+}
 
-const Gallery = ({ t }) => {
+const Gallery: React.FC<GalleryProps> = ({ t }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const salonImages = [
     '/img/produtos/kerastase.png',
@@ -493,8 +548,11 @@ const Gallery = ({ t }) => {
     </section>
   );
 };
+interface FooterProps {
+  t: Translation['footer'];
+}
 
-const Footer = ({ t }) => {
+const Footer: React.FC<FooterProps> = ({ t }) => {
   return (
     <footer id="contact" className="bg-gray-900 text-white">
       <div className="container mx-auto px-4 py-16">
@@ -528,7 +586,6 @@ const Footer = ({ t }) => {
               <p>{t.addressText}</p>
             </div>
           </div>
-
           <div>
             <h3 className="text-xl font-semibold mb-4">{t.hours}</h3>
             <div className="flex items-center gap-2">
