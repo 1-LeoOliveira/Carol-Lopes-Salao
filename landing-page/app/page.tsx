@@ -191,7 +191,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl text-center mb-8 text-[#FFD700]">
               {t('ourWorks')}
             </h2>
-            <ServiceCarousel />
+            <ServiceCarousel currentLang={currentLang} />
             <div className="text-center mt-8">
               <a
                 href="https://www.instagram.com/salaocarollopes?igsh=ZGJxcmNmOHBsdWF3"
