@@ -348,9 +348,9 @@ interface HeroCarouselProps {
 const HeroCarousel: React.FC<HeroCarouselProps> = ({ t }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const slides = [
-    { type: 'video' as const, src: '/vid/take2.mp4' },
+    { type: 'video' as const, src: '/vid/take1.mp4' },
+    { type: 'video' as const, src: '/vid/take2mp4' },
     { type: 'video' as const, src: '/vid/take3.mp4' },
-    { type: 'video' as const, src: '/vid/take4.mp4' },
   ];
 
   useEffect(() => {
