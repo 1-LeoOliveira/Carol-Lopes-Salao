@@ -1,0 +1,19 @@
+{
+    "name": "Carol Lopes Salão",
+    "short_name": "Carol Lopes",
+    "icons": [
+      {
+        "src": "/img/logo.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/img/logo.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "theme_color": "#FFD700",
+    "background_color": "#ffffff",
+    "display": "standalone"
+  }

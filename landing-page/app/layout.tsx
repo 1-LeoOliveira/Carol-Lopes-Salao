@@ -1,21 +1,35 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Playfair_Display, Lora } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const lora = Lora({
+  variable: "--font-lora",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
   title: "Carol Lopes Salão",
-  description: "Salão de beleza",
-};
+  description: "Experiência única em beleza e sofisticação",
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/img/logo.png', sizes: '32x32', type: 'image/png' },
+      { url: '/img/logo.png', sizes: '16x16', type: 'image/png' }
+    ],
+    apple: [
+      { url: '/img/logo.png', sizes: '180x180', type: 'image/png' }
+    ],
+    shortcut: [{ url: '/favicon.ico' }]
+  },
+  manifest: '/site.webmanifest'
+}
 
 export default function RootLayout({
   children,
@@ -23,9 +37,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${playfair.variable} ${lora.variable} antialiased`}
       >
         {children}
       </body>

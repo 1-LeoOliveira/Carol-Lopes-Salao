@@ -92,7 +92,7 @@ const translations: Translations = {
           description: 'Especialista em coloração e cortes modernos'
         },
         {
-          name: 'Ana Silva',
+          name: 'Agatha Silva',
           role: 'Colorista',
           description: 'Expert em mechas e coloração'
         },
@@ -157,7 +157,7 @@ const translations: Translations = {
           description: 'Specialist in coloring and modern cuts'
         },
         {
-          name: 'Ana Silva',
+          name: 'Agatha Silva',
           role: 'Colorist',
           description: 'Expert in highlights and coloring'
         },
@@ -222,7 +222,7 @@ const translations: Translations = {
           description: 'Especialista en coloración y cortes modernos'
         },
         {
-          name: 'Ana Silva',
+          name: 'Agatha Silva',
           role: 'Colorista',
           description: 'Experta en mechas y coloración'
         },
@@ -287,7 +287,7 @@ const translations: Translations = {
           description: 'Spécialiste en coloration et coupes modernes'
         },
         {
-          name: 'Ana Silva',
+          name: 'Agatha Silva',
           role: 'Coloriste',
           description: 'Experte en mèches et coloration'
         },
@@ -381,7 +381,7 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ t }) => {
       <div className="absolute inset-0 bg-black/40" />
       <div className="absolute inset-0 flex items-center justify-center text-center">
         <div className="px-4">
-          <h1 className="text-4xl md:text-6xl lg:text-7xl text-[#FFD700] font-light mb-6">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl text-[#FFD700] font-playfair mb-6">
             {t.title}
           </h1>
           <p className="text-xl md:text-2xl text-white mb-8">
@@ -407,7 +407,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ t }) => {
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl text-center mb-16 text-[#FFD700]">
+        <h2 className="text-3xl font-playfair md:text-4xl text-center mb-16 text-black">
           {t.title}
         </h2>
         <div className="grid md:grid-cols-4 gap-8 max-w-6xl mx-auto">
@@ -417,7 +417,7 @@ const ServicesSection: React.FC<ServicesSectionProps> = ({ t }) => {
               className="bg-white p-8 rounded-lg shadow-lg text-center transform hover:-translate-y-1 transition-transform duration-300 border border-gray-100"
             >
               <div className="text-4xl mb-4">{service.icon}</div>
-              <h3 className="text-2xl mb-4 text-[#FFD700]">{service.title}</h3>
+              <h3 className="text-2xl mb-4 text-black">{service.title}</h3>
               <p className="text-gray-600">{service.description}</p>
             </div>
           ))}
@@ -432,51 +432,88 @@ interface TeamCarouselProps {
 
 const TeamCarousel: React.FC<TeamCarouselProps> = ({ t }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const team = t.members;
+  const team = [
+    {
+      ...t.members[0],
+      instagram: 'https://www.instagram.com/carolcolorista/',
+      image: '/img/team/carol-lopes2.jpg'
+    },
+    {
+      ...t.members[1],
+      instagram: 'https://instagram.com/agathasilva',
+      image: '/img/team/ana-silva.jpg'
+    },
+    {
+      ...t.members[2],
+      instagram: 'https://instagram.com/pedrosantos',
+      image: '/img/team/pedro-santos.jpg'
+    }
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % team.length);
+    }, 10000);
+    return () => clearInterval(timer);
+  }, [team.length]);
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl text-center mb-16 text-[#FFD700]">
-          {t.title}
-        </h2>
-        <div className="relative max-w-4xl mx-auto">
-          <div className="overflow-hidden">
-            <div className="flex transition-transform duration-500" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
-              {team.map((member, index) => (
-                <div key={index} className="w-full flex-shrink-0 px-4">
-                  <div className="bg-white rounded-lg shadow-lg overflow-hidden">
-                    <img
-                      src={`${process.env.NEXT_PUBLIC_BASE_URL}/img/team/${member.name.toLowerCase().replace('Carol','')}.jpg`}
-                      alt={member.name}
-                      className="w-full h-64 object-cover"
-                    />
-                    <div className="p-6">
-                      <h3 className="text-2xl font-semibold mb-2">{member.name}</h3>
-                      <p className="text-[#FFD700] mb-4">{member.role}</p>
-                      <p className="text-gray-600">{member.description}</p>
-                    </div>
-                  </div>
-                </div>
-              ))}
+    <section className="relative h-screen w-full overflow-hidden">
+      {team.map((member, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-all duration-1000 ${currentSlide === index
+              ? 'opacity-100 pointer-events-auto z-10'
+              : 'opacity-0 pointer-events-none z-0'
+            }`}
+        >
+          <img
+            src={member.image}
+            alt={member.name}
+            className="object-cover w-full h-full"
+          />
+          <div className="absolute inset-0 bg-black/40" />
+          <div className="absolute inset-0 flex items-center justify-center text-center">
+            <div className="px-4 max-w-2xl">
+              <h2 className="text-4xl md:text-6xl text-[#FFD700] font-playfair mb-4">
+                {member.name}
+              </h2>
+              <p className="text-xl md:text-2xl text-white mb-4">
+                {member.role}
+              </p>
+              <p className="text-lg text-white/90 mb-6">
+                {member.description}
+              </p>
+              {member.instagram && (
+                <a
+                  href={member.instagram}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-[#FFD700] hover:bg-[#FFE55C] text-black rounded-full transition-colors duration-300"
+                >
+                  <Instagram className="w-5 h-5" />
+                  Siga no Instagram
+                </a>
+              )}
             </div>
           </div>
-          <button
-            onClick={() => setCurrentSlide((prev) => (prev === 0 ? team.length - 1 : prev - 1))}
-            className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg"
-            aria-label="Previous slide"
-          >
-            <ChevronLeft className="w-6 h-6" />
-          </button>
-          <button
-            onClick={() => setCurrentSlide((prev) => (prev === team.length - 1 ? 0 : prev + 1))}
-            className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 p-2 rounded-full shadow-lg"
-            aria-label="Next slide"
-          >
-            <ChevronRight className="w-6 h-6" />
-          </button>
         </div>
-      </div>
+      ))}
+
+      <button
+        onClick={() => setCurrentSlide((prev) => (prev === 0 ? team.length - 1 : prev - 1))}
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors duration-300 z-20"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="w-6 h-6 text-white" />
+      </button>
+      <button
+        onClick={() => setCurrentSlide((prev) => (prev === team.length - 1 ? 0 : prev + 1))}
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors duration-300 z-20"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="w-6 h-6 text-white" />
+      </button>
     </section>
   );
 };
@@ -487,13 +524,15 @@ interface GalleryProps {
 const Gallery: React.FC<GalleryProps> = ({ t }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const salonImages = [
-    '/img/produtos/kerastase.png',
+    '/img/salon/space1.jpg',
     '/img/salon/space2.jpg'
   ];
 
   const brands = [
-    '/img/produtos/kerastase.png',
-    '/img/brands/brand2.jpg'
+    '/img/brands/brand1.jpg',
+    '/img/brands/brand2.jpg',
+    '/img/brands/brand3.jpg',
+    '/img/brands/brand4.jpg'
   ];
 
   useEffect(() => {
@@ -501,21 +540,21 @@ const Gallery: React.FC<GalleryProps> = ({ t }) => {
       setCurrentSlide((prev) => (prev + 1) % salonImages.length);
     }, 5000);
     return () => clearInterval(timer);
-  }, []);
+  }, [salonImages.length]);
 
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-4">
-        <h2 className="text-3xl md:text-4xl text-center mb-16 text-[#FFD700]">
+        <h2 className="text-3xl font-playfair md:text-4xl text-center mb-16 text-black">
           {t.productsTitle}
         </h2>
 
         {/* Brands row */}
         <div className="flex justify-center items-center gap-8 mb-20">
           {brands.map((brand, index) => (
-            <div key={index} className="w-32 h-32 relative">
+            <div key={index} className="w-32 h-32 relative bg-black rounded-lg p-4">
               <img
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}${brand}`}
+                src={brand}
                 alt={`Brand ${index + 1}`}
                 className="object-contain w-full h-full hover:scale-110 transition-transform duration-300"
               />
@@ -524,7 +563,7 @@ const Gallery: React.FC<GalleryProps> = ({ t }) => {
         </div>
 
         {/* Salon images carousel */}
-        <h2 className="text-3xl md:text-4xl text-center mb-16 text-[#FFD700]">
+        <h2 className="text-3xl font-playfair md:text-4xl text-center mb-16 text-black">
           {t.spaceTitle}
         </h2>
         <div className="relative h-[600px] w-full overflow-hidden rounded-lg">
@@ -535,13 +574,41 @@ const Gallery: React.FC<GalleryProps> = ({ t }) => {
                 }`}
             >
               <img
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}${image}`}
+                src={image}
                 alt={`Salon space ${index + 1}`}
                 className="object-cover w-full h-full"
               />
             </div>
           ))}
-          <div className="absolute inset-0 bg-black/20" />
+
+          {/* Carousel Controls */}
+          <button
+            onClick={() => setCurrentSlide((prev) => (prev === 0 ? salonImages.length - 1 : prev - 1))}
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors duration-300"
+            aria-label="Previous image"
+          >
+            <ChevronLeft className="w-6 h-6 text-white" />
+          </button>
+          <button
+            onClick={() => setCurrentSlide((prev) => (prev === salonImages.length - 1 ? 0 : prev + 1))}
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 p-3 rounded-full transition-colors duration-300"
+            aria-label="Next image"
+          >
+            <ChevronRight className="w-6 h-6 text-white" />
+          </button>
+
+          {/* Slide Indicators */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+            {salonImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentSlide(index)}
+                className={`w-2 h-2 rounded-full transition-colors duration-300 ${currentSlide === index ? 'bg-white' : 'bg-white/50'
+                  }`}
+                aria-label={`Go to slide ${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -557,7 +624,7 @@ const Footer: React.FC<FooterProps> = ({ t }) => {
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">{t.contact}</h3>
+            <h3 className="text-xl font-playfair mb-4">{t.contact}</h3>
             <div className="space-y-2">
               <a
                 href="tel:+5591984330350"
@@ -579,14 +646,14 @@ const Footer: React.FC<FooterProps> = ({ t }) => {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">{t.address}</h3>
+            <h3 className="text-xl font-playfair mb-4">{t.address}</h3>
             <div className="flex items-start gap-2">
               <MapPin className="w-4 h-4 mt-1" />
               <p>{t.addressText}</p>
             </div>
           </div>
           <div>
-            <h3 className="text-xl font-semibold mb-4">{t.hours}</h3>
+            <h3 className="text-xl font-playfair mb-4">{t.hours}</h3>
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4" />
               <div>
@@ -597,7 +664,7 @@ const Footer: React.FC<FooterProps> = ({ t }) => {
           </div>
 
           <div>
-            <h3 className="text-xl font-semibold mb-4">{t.social}</h3>
+            <h3 className="text-xl font-playfair mb-4">{t.social}</h3>
             <div className="flex gap-4">
               <a
                 href="https://instagram.com/salaocarollopes"
