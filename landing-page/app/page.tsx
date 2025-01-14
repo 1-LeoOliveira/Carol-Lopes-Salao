@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { ChevronLeft, ChevronRight, Instagram, Facebook, Phone, Mail, Clock, MapPin } from 'lucide-react';
 
 // TypeScript interfaces
