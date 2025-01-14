@@ -359,6 +359,12 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ t }) => {
     return () => clearInterval(timer);
   }, [slides.length]);
 
+  const handleScheduling = () => {
+    const phoneNumber = "5591984330350";
+    const message = encodeURIComponent("Olá, gostaria de agendar um horário");
+    window.open(`https://wa.me/${phoneNumber}?text=${message}`, '_blank');
+  };
+
   return (
     <div className="relative h-screen w-full overflow-hidden">
       {slides.map((slide, index) => (
@@ -387,12 +393,12 @@ const HeroCarousel: React.FC<HeroCarouselProps> = ({ t }) => {
           <p className="text-xl md:text-2xl text-white mb-8">
             {t.subtitle}
           </p>
-          <a
-            href="#contact"
+          <button
+            onClick={handleScheduling}
             className="px-8 py-4 bg-[#FFD700] hover:bg-[#FFE55C] transition-colors duration-300 text-black rounded-md text-lg"
           >
             {t.cta}
-          </a>
+          </button>
         </div>
       </div>
     </div>
