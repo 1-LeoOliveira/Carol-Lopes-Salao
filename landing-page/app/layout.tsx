@@ -30,7 +30,16 @@ export const metadata: Metadata = {
   },
   manifest: '/site.webmanifest',
   keywords: "beleza, salão, sofisticação, Carol Lopes, cuidados pessoais", 
-  robots: "index, follow"
+  robots: "index, follow",
+  openGraph: {
+    title: "Carol Lopes Salão",
+    description: "Experiência única em beleza e sofisticação",
+    url: "https://carol-lopes-salao.vercel.app/",
+    images: [
+      { url: '/img/logo.png', width: 800, height: 600, alt: 'Logo Carol Lopes Salão' }
+    ],
+    type: "website",
+  },
 }
 
 export default function RootLayout({
@@ -39,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt">
+    <html lang="pt-BR">
       <body
         className={`${playfair.variable} ${lora.variable} antialiased`}
       >
