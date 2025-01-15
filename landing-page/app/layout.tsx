@@ -28,7 +28,9 @@ export const metadata: Metadata = {
     ],
     shortcut: [{ url: '/favicon.ico' }]
   },
-  manifest: '/site.webmanifest'
+  manifest: '/site.webmanifest',
+  keywords: "beleza, salão, sofisticação, Carol Lopes, cuidados pessoais", 
+  robots: "index, follow"
 }
 
 export default function RootLayout({
